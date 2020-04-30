@@ -10,26 +10,34 @@ require 'faker'
 Doctor.destroy_all
 Patient.destroy_all
 Appointment.destroy_all
+City.destroy_all
+Specialty.destroy_all
+JoinTableDoctorSpecialty.destroy_all
 
 
 100.times do
   city = City.create!(
-    name: Faker::Address.city,
+    name: Faker::Address.city
   )
+
   doctor = Doctor.create!(
     first_name: Faker::Name.first_name, 
     last_name: Faker::Name.last_name, 
-    specialty: ["généraliste","gynécologue", "dentiste", "homéopathe","psychologue","psychiatre"].sample, 
+    city: City.all.sample,
     zip_code: Faker::Address.zip_code
     )
+
   patient = Patient.create!(
     first_name: Faker::Name.first_name, 
-    last_name: Faker::Name.last_name
+    last_name: Faker::Name.last_name, 
+    city: City.all.sample
     )
+
   appointment = Appointment.create!(
-    date: Faker::Date.forward(days: 30), 
-    doctor: doctor, 
-    patient: patient
+    doctor: Doctor.all.sample, 
+    patient: Patient.all.sample,
+    city: City.all.sample,
+    date: Faker::Date.forward(days: 30)
     )
 
 end
